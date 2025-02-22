@@ -1,6 +1,6 @@
 const express = require("express");
 const userRouter = express.Router();
-const { UserModel } = require("../models/userModel");
+const { UserModel } = require("../models/usermodel");
 const { DeletedUserModel } = require("../models/deleteduser");
 const { authenticate } = require("../middleware/auth");
 const jwt = require("jsonwebtoken");
@@ -18,14 +18,14 @@ userRouter.post("/register", async (req, res) => {
 
 userRouter.post("/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const user = await UserModel.findOne({ email });
+    const { username, password } = req.body;
+    const user = await UserModel.findOne({ username });
     if (!user) {
-      return res.status(401).send("Invalid email or password.");
+      return res.status(401).send("Invalid username or password/.");
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).send("Invalid email or password.");
+      return res.status(401).send("Invalid username or password.");
     }
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
     res.send(token);

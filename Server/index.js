@@ -3,10 +3,12 @@ const app = express();
 const { bookRouter } = require("./routes/bookRoute");
 const { userRouter } = require("./routes/userRoute");
 const { Connect } = require("./config/db");
+// const cors = require("cors");
 require("dotenv").config();
 app.use(express.json());
-app.use("/book", bookRouter);
+// app.use(cors);
 app.use("/user", userRouter);
+app.use("/book", bookRouter);
 
 app.listen(process.env.Port, async () => {
   await Connect;
